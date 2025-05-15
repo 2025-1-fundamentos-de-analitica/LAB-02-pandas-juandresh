@@ -5,6 +5,7 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 librerias de pandas para resolver las preguntas.
 """
 
+import pandas as pd
 
 def pregunta_10():
     """
@@ -20,3 +21,24 @@ def pregunta_10():
     D                   1:2:3:5:5:7
     E   1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+    df = pd.read_csv('files/input/tbl0.tsv', sep='\t')
+
+    dic = {}
+
+    for reg in range(len(df)):
+
+        let = df.iloc[reg]['c1']
+        num = df.iloc[reg]['c2']
+
+        if let in dic:
+            dic[let].append(int(num))
+        else:
+            dic[let] = [int(num)]
+
+    dic = sorted(list(dic.items()))
+
+    nums = {cla:':'.join(map(str, sorted(tup))) for cla, tup in dic}
+
+    resp = pd.DataFrame.from_dict(nums, orient='index', columns=['c2'])
+    resp.index.name = 'c1'
+    return resp
